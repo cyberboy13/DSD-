@@ -1,0 +1,39 @@
+module mux2to16(w0,w1,s0,s1,s3,f);
+input [7:0]w0;
+input [15:8]w1;
+input [2:0]s0;
+input [5:3]s1;
+input s3;
+output f;
+MUX16 stage0(w0,s0,f1);
+MUX16 stage1(w1,s1,f2);
+MUX2 stage2(f1,f2,s3,f);
+endmodule
+
+module MUX16(W,S,Y);
+input [7:0]W;
+input [2:0]S;
+output Y;
+reg Y;
+always @(*)
+begin
+case(S)
+3'b001: Y = W [1];
+3'b010: Y = W[2];
+3'b011: Y = W[3];
+3'b100: Y = W[4];
+3'b101: Y = W[5];
+3'b110: Y = W[6];
+3'b111: Y = W[7];
+default: Y = 1'b0;
+endcase
+end
+endmodule
+
+module MUX2 (A0,A1,B,R);
+input A0,A1,B;
+output R;
+reg R;
+always @(A0 or A1 or B)
+R = B ? A1 : A0;
+endmodule 
